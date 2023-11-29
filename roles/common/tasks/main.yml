@@ -1,0 +1,34 @@
+---
+- name: Download and install ntpd
+  yum: "name={{ item }} state=installed"
+  with_items:
+    - ntp
+    - epel-release
+    - tcpdump
+
+- name: Copy bashrc
+  template: src=bashrc.j2 dest=/home/vagrant/.bashrc
+
+- name: Copy vimrc
+  template: src=vimrc.j2 dest=/home/vagrant/.vimrc
+
+- name: Disable SELINUX
+  selinux:
+    policy: targeted
+    state: disabled
+
+- name: set hostname
+  hostname:
+    name: "{{ hostname }}"
+
+- name: set timezone to {{ timezone }}
+  timezone:
+    name: "{{ timezone }}"
+
+- name: Configure the ntpd cnf file
+  template: src=ntp.conf.j2 dest=/etc/ntp.conf
+  notify: restart ntpd
+
+- name: Start the ntpd service
+  service: name=ntpd state=started enabled=yes
+...

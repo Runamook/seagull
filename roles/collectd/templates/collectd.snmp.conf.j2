@@ -1,0 +1,77 @@
+LoadPlugin snmp
+<Plugin snmp>
+        <Data "linux_cpu_user_raw">
+                Type "cpu"
+                Table false
+                Instance "user_raw"
+                Values "UCD-SNMP-MIB::ssCpuRawUser.0"
+        </Data>
+        <Data "linux_cpu_system_raw">
+                Type "cpu"
+                Table false
+                Instance "system_raw"
+                Values "UCD-SNMP-MIB::ssCpuRawSystem.0"
+        </Data>
+        <Data "linux_cpu_idle_raw">
+                Type "cpu"
+                Table false
+                Instance "idle_raw"
+                Values "UCD-SNMP-MIB::ssCpuRawIdle.0"
+        </Data>
+        <Data "linux_cpu_wait_raw">
+                Type "cpu"
+                Table false
+                Instance "wait_raw"
+                Values "UCD-SNMP-MIB::ssCpuRawWait.0"
+        </Data>
+        <Data "linux_cpu_nice_raw">
+                Type "cpu"
+                Table false
+                Instance "nice_raw"
+                Values "UCD-SNMP-MIB::ssCpuRawNice.0"
+        </Data>
+        <Data "linux_cpu_kernel_raw">
+                Type "cpu"
+                Table false
+                Instance "kernel_raw"
+                Values "UCD-SNMP-MIB::ssCpuRawKernel.0"
+        </Data>
+        <Data "linux_cpu_soft_irq">
+                Type "irq"
+                Table false
+                Instance "soft_irq_raw"
+                Values "UCD-SNMP-MIB::ssCpuRawSoftIRQ.0"
+        </Data>
+        <Data "linux_cpu_raw_interrupt">
+                Type "derive"
+                Table false
+                Instance "cpu_interrupt_raw"
+                Values "UCD-SNMP-MIB::ssCpuRawInterrupt.0"
+        </Data>
+        <Data "linux_cpu_raw_context">
+                Type "derive"
+                Table false
+                Instance "cpu_context_raw"
+                Values "UCD-SNMP-MIB::ssRawContexts.0"
+        </Data>
+        <Data "linux_mem_total">
+                Type "memory"
+                Table false
+                Instance "total_real"
+                Values "UCD-SNMP-MIB::memTotalReal.0"
+        </Data>
+        <Data "linux_mem_avail">
+                Type "memory"
+                Table false
+                Instance "avail_real"
+                Values "UCD-SNMP-MIB::memAvailReal.0"
+        </Data>
+{% for snmp_host in snmp_hosts %}
+        <Host "{{ snmp_host.name }}">
+                Address "{{ snmp_host.ip_address }}"
+                Version 2
+                Community {{ snmp_community }}
+                Collect "linux_cpu_user_raw" "linux_cpu_idle_raw" "linux_cpu_system_raw" "linux_cpu_wait_raw" "linux_cpu_nice_raw" "linux_cpu_kernel_raw" "linux_cpu_soft_irq" "linux_cpu_raw_interrupt" "linux_cpu_raw_context" "linux_mem_total" "linux_mem_avail"
+        </Host>
+{% endfor %}
+</Plugin>

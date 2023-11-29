@@ -1,0 +1,9 @@
+set daemon  30              # check services at 30 seconds intervals
+set logfile syslog
+
+set httpd port 2812 and
+    use address {{ ip_address }}  # only accept connection from localhost
+    allow 0.0.0.0/0        # allow localhost to connect to the server and
+    allow admin:monit      # require user 'admin' with password 'monit'
+
+include /etc/monit.d/*

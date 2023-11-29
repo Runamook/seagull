@@ -1,0 +1,389 @@
+{
+   "dashboard" : {
+      "graphTooltip" : 1,
+      "time" : {
+         "from" : "now-1h",
+         "to" : "now"
+      },
+      "schemaVersion" : 16,
+      "timezone" : "",
+      "editable" : true,
+      "id" : null,
+      "panels" : [
+         {
+            "renderer" : "flot",
+            "id" : 2,
+            "lines" : true,
+            "dashes" : false,
+            "timeFrom" : null,
+            "gridPos" : {
+               "h" : 5,
+               "x" : 0,
+               "y" : 0,
+               "w" : 8
+            },
+            "timeShift" : null,
+            "targets" : [
+               {
+                  "target" : "aliasByMetric(averageSeries(collectd.*.cpu*.cpu-idle))",
+                  "refId" : "A"
+               }
+            ],
+            "points" : false,
+            "bars" : false,
+            "tooltip" : {
+               "shared" : true,
+               "sort" : 0,
+               "value_type" : "individual"
+            },
+            "aliasColors" : {},
+            "linewidth" : 1,
+            "title" : "CPU idle",
+            "yaxes" : [
+               {
+                  "format" : "short",
+                  "show" : true,
+                  "logBase" : 1,
+                  "max" : null,
+                  "label" : null,
+                  "min" : null
+               },
+               {
+                  "format" : "short",
+                  "min" : null,
+                  "show" : true,
+                  "label" : null,
+                  "max" : null,
+                  "logBase" : 1
+               }
+            ],
+            "dashLength" : 10,
+            "type" : "graph",
+            "xaxis" : {
+               "buckets" : null,
+               "values" : [],
+               "mode" : "time",
+               "show" : true,
+               "name" : null
+            },
+            "stack" : false,
+            "steppedLine" : false,
+            "nullPointMode" : "null",
+            "pointradius" : 5,
+            "spaceLength" : 10,
+            "datasource" : null,
+            "legend" : {
+               "show" : true,
+               "max" : false,
+               "min" : false,
+               "avg" : false,
+               "values" : false,
+               "current" : false,
+               "total" : false
+            },
+            "thresholds" : [],
+            "percentage" : false,
+            "seriesOverrides" : [],
+            "fill" : 0,
+            "links" : [],
+            "yaxis" : {
+               "alignLevel" : null,
+               "align" : false
+            }
+         },
+         {
+            "lines" : true,
+            "id" : 3,
+            "targets" : [
+               {
+                  "target" : "aliasSub(collectd.*.interface-*[0-9].if_octets.*, '(.if_octets.)|(^.*interface-)', ' ')",
+                  "refId" : "A",
+                  "refCount" : 0
+               }
+            ],
+            "timeShift" : null,
+            "dashes" : false,
+            "timeFrom" : null,
+            "gridPos" : {
+               "y" : 0,
+               "x" : 8,
+               "w" : 8,
+               "h" : 5
+            },
+            "renderer" : "flot",
+            "linewidth" : 1,
+            "aliasColors" : {},
+            "title" : "Interfaces",
+            "tooltip" : {
+               "value_type" : "individual",
+               "sort" : 0,
+               "shared" : true
+            },
+            "bars" : false,
+            "points" : false,
+            "nullPointMode" : "null",
+            "steppedLine" : false,
+            "pointradius" : 5,
+            "dashLength" : 10,
+            "type" : "graph",
+            "yaxes" : [
+               {
+                  "format" : "Bps",
+                  "show" : true,
+                  "max" : null,
+                  "logBase" : 1,
+                  "label" : null,
+                  "min" : null
+               },
+               {
+                  "label" : null,
+                  "show" : true,
+                  "max" : null,
+                  "logBase" : 1,
+                  "min" : null,
+                  "format" : "short"
+               }
+            ],
+            "stack" : false,
+            "xaxis" : {
+               "buckets" : null,
+               "values" : [],
+               "mode" : "time",
+               "show" : true,
+               "name" : null
+            },
+            "seriesOverrides" : [],
+            "fill" : 0,
+            "links" : [],
+            "percentage" : false,
+            "thresholds" : [],
+            "yaxis" : {
+               "alignLevel" : null,
+               "align" : false
+            },
+            "spaceLength" : 10,
+            "legend" : {
+               "max" : false,
+               "show" : true,
+               "min" : false,
+               "current" : false,
+               "values" : false,
+               "avg" : false,
+               "total" : false
+            },
+            "datasource" : null
+         },
+         {
+            "renderer" : "flot",
+            "id" : 4,
+            "lines" : true,
+            "timeFrom" : null,
+            "dashes" : false,
+            "gridPos" : {
+               "h" : 7,
+               "y" : 5,
+               "w" : 11,
+               "x" : 0
+            },
+            "timeShift" : null,
+            "targets" : [
+               {
+                  "refId" : "A",
+                  "target" : "aliasSub(maximumAbove(collectd.*.curl*.derive-su*, 0), '((^.*curl-)|(.derive-))', ' ')"
+               }
+            ],
+            "points" : false,
+            "tooltip" : {
+               "shared" : true,
+               "sort" : 0,
+               "value_type" : "individual"
+            },
+            "bars" : false,
+            "aliasColors" : {},
+            "linewidth" : 1,
+            "title" : "Generators succesful calls",
+            "yaxes" : [
+               {
+                  "format" : "short",
+                  "max" : null,
+                  "show" : true,
+                  "label" : null,
+                  "logBase" : 1,
+                  "min" : null
+               },
+               {
+                  "min" : null,
+                  "max" : null,
+                  "show" : true,
+                  "label" : null,
+                  "logBase" : 1,
+                  "format" : "short"
+               }
+            ],
+            "type" : "graph",
+            "dashLength" : 10,
+            "xaxis" : {
+               "name" : null,
+               "show" : true,
+               "buckets" : null,
+               "values" : [],
+               "mode" : "time"
+            },
+            "stack" : false,
+            "nullPointMode" : "null",
+            "steppedLine" : false,
+            "pointradius" : 5,
+            "spaceLength" : 10,
+            "datasource" : null,
+            "legend" : {
+               "min" : false,
+               "show" : true,
+               "max" : false,
+               "total" : false,
+               "values" : false,
+               "current" : false,
+               "avg" : false
+            },
+            "thresholds" : [],
+            "percentage" : false,
+            "seriesOverrides" : [],
+            "links" : [],
+            "fill" : 0,
+            "yaxis" : {
+               "alignLevel" : null,
+               "align" : false
+            }
+         },
+         {
+            "links" : [],
+            "seriesOverrides" : [],
+            "fill" : 0,
+            "percentage" : false,
+            "thresholds" : [],
+            "yaxis" : {
+               "alignLevel" : null,
+               "align" : false
+            },
+            "spaceLength" : 10,
+            "legend" : {
+               "min" : false,
+               "show" : true,
+               "max" : false,
+               "total" : false,
+               "values" : false,
+               "avg" : false,
+               "current" : false
+            },
+            "datasource" : null,
+            "steppedLine" : false,
+            "nullPointMode" : "null",
+            "pointradius" : 5,
+            "dashLength" : 10,
+            "type" : "graph",
+            "yaxes" : [
+               {
+                  "show" : true,
+                  "max" : null,
+                  "logBase" : 1,
+                  "label" : null,
+                  "min" : null,
+                  "format" : "short"
+               },
+               {
+                  "min" : null,
+                  "show" : true,
+                  "label" : null,
+                  "max" : null,
+                  "logBase" : 1,
+                  "format" : "short"
+               }
+            ],
+            "stack" : false,
+            "xaxis" : {
+               "values" : [],
+               "mode" : "time",
+               "buckets" : null,
+               "show" : true,
+               "name" : null
+            },
+            "linewidth" : 1,
+            "aliasColors" : {},
+            "title" : "Generators failed calls",
+            "tooltip" : {
+               "value_type" : "individual",
+               "shared" : true,
+               "sort" : 0
+            },
+            "bars" : false,
+            "points" : false,
+            "lines" : true,
+            "id" : 5,
+            "timeShift" : null,
+            "targets" : [
+               {
+                  "target" : "aliasSub(maximumAbove(collectd.*.curl*.derive-fa*, 0), '((^.*curl-)|(.derive-))', ' ')",
+                  "refId" : "A"
+               }
+            ],
+            "gridPos" : {
+               "y" : 5,
+               "x" : 11,
+               "w" : 13,
+               "h" : 7
+            },
+            "timeFrom" : null,
+            "dashes" : false,
+            "renderer" : "flot"
+         }
+      ],
+      "title" : "Generator",
+      "timepicker" : {
+         "refresh_intervals" : [
+            "5s",
+            "10s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "30m",
+            "1h",
+            "2h",
+            "1d"
+         ],
+         "time_options" : [
+            "5m",
+            "15m",
+            "1h",
+            "6h",
+            "12h",
+            "24h",
+            "2d",
+            "7d",
+            "30d"
+         ]
+      },
+      "tags" : [],
+      "version" : 3,
+      "refresh" : "1m",
+      "uid" : null,
+      "templating" : {
+         "list" : []
+      },
+      "annotations" : {
+         "list" : [
+            {
+               "datasource" : "-- Grafana --",
+               "name" : "Annotations & Alerts",
+               "type" : "dashboard",
+               "hide" : true,
+               "builtIn" : 1,
+               "iconColor" : "rgba(0, 211, 255, 1)",
+               "enable" : true
+            }
+         ]
+      },
+      "style" : "dark",
+      "links" : [],
+      "gnetId" : null
+   }
+}

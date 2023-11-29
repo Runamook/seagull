@@ -1,0 +1,74 @@
+---
+
+- name: Add Grafana repository
+  yum_repository:
+    name: grafana
+    description: grafana
+    baseurl: https://packagecloud.io/grafana/stable/el/6/$basearch
+    gpgcheck: 0
+
+- name: Install Grafana
+  yum: "name={{ item }} state=installed"
+  with_items:
+    - grafana
+  register: grafana_installed
+
+- name: Grafana config
+  copy:
+    src: roles/grafana/templates/grafana.ini.j2
+    dest: /etc/grafana/grafana.ini
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart grafana
+  when: grafana_installed.changed
+
+- name: Start httpd
+  service: "name={{ item }} state=started enabled=true"
+  with_items:
+    - grafana-server
+
+- name: Pause for 1 minute
+  pause:
+    minutes: 1
+  when: grafana_installed.changed
+
+- name: Create datasource
+  uri:
+    url: http://localhost:3000/api/datasources
+    method: POST
+    force_basic_auth: true
+    user: "{{ grafana_user }}"
+    password: "{{ grafana_pass }}"
+    headers:
+      Accept: "application/json"
+      Content-Type: "application/json"
+    body_format: json
+    body: {"isDefault":true, "name":"local_graphite", "type":"graphite", "url":"http://localhost", "access":"proxy", "basicAuth":false, "jsonData":{"graphiteVersion":"1.0"}}
+  when: grafana_installed.changed
+
+  #- name: Import Grafana dashboard
+  #grafana_dashboard:
+  #  grafana_url: http://192.168.33.3:3000
+  #  state: present
+  #  message: Updated by ansible
+  #  overwrite: yes
+  #  path: generator.json
+  #  grafana_user: {{ grafana_user }}
+  #  grafana_password: {{ grafana_pass }}
+- name: import grafana dashboards
+  uri:
+    url: http://{{ ansible_ssh_host }}:3000/api/dashboards/db
+    user: "{{ grafana_user }}"
+    password: "{{ grafana_pass }}"
+    force_basic_auth: true
+    method: POST
+    body_format: json
+    #body: '{{ lookup("file", "roles/grafana/templates/generators.json") }}'
+    body: '{{ lookup("file", {{ item }}) }}'
+  with_items:
+    - roles/grafana/templates/generators.json
+    - roles/grafana/templates/snmp.json
+
+...

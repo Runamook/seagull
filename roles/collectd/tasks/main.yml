@@ -1,0 +1,23 @@
+---
+
+- name: Install yum packages
+  yum: "name={{ item }} state=installed"
+  with_items:
+    - collectd
+    - collectd-curl
+    - collectd-snmp
+
+- name: Copy collectd files
+  template: "src={{ item.name }} dest={{ item.dest }} mode={{ item.mode }}"
+  with_items:
+    - { name: 'collectd.conf.j2', dest: '/etc/collectd.conf', mode: '0644' }
+    - { name: 'collectd.curl.conf.j2', dest: '/etc/collectd.d/curl.conf', mode: '0644' }
+    - { name: 'collectd.graphite.conf.j2', dest: '/etc/collectd.d/graphite.conf', mode: '0644' }
+    - { name: 'collectd.snmp.conf.j2', dest: '/etc/collectd.d/snmp.conf', mode: '0644' }
+  notify:
+    - restart collectd
+
+- name: Start the collectd service
+  service: name=collectd state=started enabled=yes
+
+...

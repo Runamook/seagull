@@ -1,0 +1,68 @@
+---
+- name: Install YUM packages
+  yum: "name={{ item }} state=installed"
+  with_items:
+    - python-pip
+    - python-devel
+    - "@Development tools"
+    - sqlite
+    - pycairo
+    - libfontenc
+    - cairo-devel
+    - libffi-devel
+    - bind-utils
+    - httpd
+    - mod_wsgi
+
+- name: Install six
+  pip: "name={{ item }} state=latest"
+  with_items:
+    six
+
+- name: Install whisper, carbon, graphite-web from pip
+  pip: "name={{ item }} state=latest"
+  with_items:
+    - whisper
+    - carbon
+    - graphite-web
+  register: graphite_installed
+
+- name: Create dirs
+  file: "path={{ item }} state=directory"
+  with_items:
+    - "/opt/graphite/storage/log/webapp/"
+    - "/opt/graphite/static/"
+
+- name: Copy files
+  template: "src={{ item.src }} dest={{ item.dest }} owner={{ item.owner }} group={{ item.group }} mode={{ item.mode }}"
+  with_items:
+    - { src: 'roles/grafana/templates/carbon.service.j2', dest: '/etc/systemd/system/carbon.service', owner: 'root', group: 'root', mode: '0644'}
+    - { src: 'roles/grafana/templates/carbon.conf.j2', dest: '/opt/graphite/conf/carbon.conf', owner: 'apache', group: 'apache', mode: '0644'}
+    - { src: 'roles/grafana/templates/storage-schemas.conf.j2', dest: '/opt/graphite/conf/storage-schemas.conf', owner: 'apache', group: 'apache', mode: '0644'}
+    - { src: 'roles/grafana/templates/local_settings.py.j2', dest: '/opt/graphite/webapp/graphite/local_settings.py', owner: 'apache', group: 'apache', mode: '0644'}
+    - { src: 'roles/grafana/templates/graphite.wsgi.j2', dest: '/opt/graphite/conf/graphite.wsgi', owner: 'apache', group: 'apache', mode: '0744'}
+    - { src: 'roles/grafana/templates/extras.sh.j2', dest: '/{{ ansible_ssh_user }}/extras.sh', owner: 'apache', group: 'apache', mode: '0700'}
+
+- name: Execute the command in remote shell
+  shell: /{{ ansible_ssh_user }}/extras.sh
+  when: graphite_installed.changed
+
+- name: Set /opt/graphite permissions
+  file:
+    dest: /opt/graphite
+    owner: apache
+    group: apache
+    recurse: true
+
+- name: Remove dummy.txt
+  #command: find /opt/ -name dummy.txt -exec rm -rf {} \;
+  shell: for i in `find /opt/ -name dummy.txt`; do rm -rf $i; done
+
+- name: Start carbon
+  service: "name={{ item }} state=started enabled=true"
+  with_items:
+    - carbon
+  notify:
+    - restart carbon
+
+...

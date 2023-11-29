@@ -1,0 +1,12 @@
+---
+- name: Download and install monit
+  yum: name=monit state=present
+
+- name: Configure the monit cnf file
+  template: src=monitrc.j2 dest=/etc/monitrc
+  #notify:
+  #  - restart monit
+
+- name: Stop the monit service
+  service: name=monit state=stopped enabled=no
+...

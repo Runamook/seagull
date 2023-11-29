@@ -1,0 +1,98 @@
+#!/bin/bash
+# source function library
+. /etc/rc.d/init.d/functions
+
+INSTANCE=$2
+PID_DIR="/var/run/seagull"
+PID_FILE=$PID_DIR/s6a.server.$INSTANCE.pid
+HOST="{{ own_sig_address }}"
+
+unset http_proxy
+
+SEAGULL_BASE={{ seagull_path }}
+CONFGEN={{ seagull_path }}/run/S6a.server.confgen.sh
+
+CONF=/tmp/.S6a.server.$INSTANCE.conf.xml
+SCEN=/tmp/.S6a.server.$INSTANCE.scen.xml
+DICO=$SEAGULL_BASE/dico/S6a.dico.optimized.xml
+LOG=$SEAGULL_BASE/logs/S6a.server.$INSTANCE.log
+
+check_running()
+{
+if [ -f $PID_FILE ]; then
+	echo -e "\n$PID_FILE exists\nProcess already running\n"
+	exit 1
+fi 
+}
+
+start ()
+{
+		check_running
+		bash $CONFGEN $INSTANCE
+
+		PORT=$(echo "$(($INSTANCE + 22221))")
+
+		/usr/local/bin/seagull -conf $CONF -dico $DICO -scen $SCEN -log $LOG -llevel N -ctrl $HOST:$PORT -bg &&     success || failure
+		#/usr/local/bin/seagull -conf $CONF -dico $DICO -scen $SCEN -log $LOG -llevel ET -ctrl $HOST:$PORT -bg &&     success || failure
+		RETVAL=$?
+		if [ "$RETVAL" == 0 ]; then
+			PID=$(ps aux | grep -v grep | grep -E "ctrl .*$PORT" | awk '{print $2}')	
+			echo $PID > $PID_FILE
+			sleep 2
+			curl -s http://$HOST:$PORT/seagull/counters/all
+			echo
+			echo "Started seagull on port $DIAM_PORT"
+			echo "Control interface on $PORT"
+			echo
+			exit 0
+		fi
+}
+
+stop ()
+{
+		killproc -p $PID_FILE -SIGUSR1
+		RETVAL=$?
+		[ "$RETVAL" = 0 ] && rm -f $PID_FILE || failure $"Stopping $prog"
+		echo
+}
+
+graceful ()
+{
+                PORT=$(echo "$(($INSTANCE + 22221))")
+                curl -s http://$HOST:$PORT/seagull/command/stop && success || failure
+                echo "Stopping seagull..."
+                #RETVAL=$(curl -s http://$HOST:$PORT/seagull/counters/all && echo 0 || echo 1)
+
+                #while [ "$RETVAL" -eq "0" ]; do
+                #       sleep 1
+                #RETVAL=$(curl -s http://$HOST:$PORT/seagull/counters/all && echo 0 || echo 1)
+                #done
+                #rm -f $PID_FILE
+                #echo "Stopped"
+}
+
+stats ()
+{
+                PORT=$(echo "$(($INSTANCE + 22221))")
+                curl -s http://$HOST:$PORT/seagull/counters/all
+                echo
+}
+
+
+case "$1" in
+                start)
+                                start
+                                ;;
+                stop)
+                                stop
+                                ;;
+                stats)
+                                stats
+                                ;;
+                graceful)
+                                graceful
+                                ;;
+                *)
+                                echo "Usage: $0 {start # resultcode1 resultcode2|stop #|stats #|graceful #}"
+                                RETVAL=1
+esac

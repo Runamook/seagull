@@ -1,0 +1,92 @@
+#!/bin/bash
+
+#  #instance,origin_host,origin_realm,dest_host,dest_realm,imsi_start,msisdn_start,amount_of_profiles,ip_start,peer_addr,peer_port,own_sig_addr,own_sig_addr_hex
+#  1,fqdn1.realm.org,realm.org,fqdn1.remote.realm.org,remote.realm.org,250999000000000,79990000000,10000,AA100101,10.0.0.1,3868,192.168.33.4,c0a82103
+
+if [ -z ${1+x} ]; then
+    echo "No instance number"
+    exit 255
+else
+    echo "instance is set to $1"
+    sleep 1
+fi
+
+
+INSTANCE=$1
+INFILE="{{ seagull_path }}/run/Seagull_template.cl.csv"
+
+PID_DIR="/var/run/seagull"
+HOST="{{ own_sig_address }}"
+SEAGULL_BASE={{ seagull_path }}
+
+create_imsi_list ()
+{
+
+TEMP_FILE=/tmp/.gull_temp_file.txt
+
+# Generate file head
+echo -e "Cleaning $IMSI_LIST"
+echo -e "Generating a file with \n\nstart IMSI: $IMSI_START \nstart MSISDN: $MSISDN_START \nIP: $IP_START \n$RECORD_AMOUNT records"
+
+/bin/rm -f $IMSI_LIST
+
+cat > $TEMP_FILE <<EOF
+"string";"string";"string";"string";
+# "framed-ip","imsi";"msisdn";"imei"
+# "172.16.1.1";"250999000000001";"79990000001";"3548170784554801"
+EOF
+
+for i in $(seq $RECORD_AMOUNT); do
+	let IMSI=$IMSI_START+$i
+	let MSISDN=$MSISDN_START+$i
+	IP_ADDR=$(echo "obase=16;ibase=16;$IP_START + $i" | bc)
+	echo "\"0x$IP_ADDR\";\"$IMSI\";\"$MSISDN\";\"3548170784554801\";" >> $TEMP_FILE
+done
+
+tr '[:upper:]' '[:lower:]' < $TEMP_FILE > $IMSI_LIST
+
+/bin/rm -f $TEMP_FILE
+
+}
+
+create_config () 
+{
+TEMPL_CONF=$SEAGULL_BASE/config/S6a.client.template.xml
+TEMPL_SCEN=$SEAGULL_BASE/scen/S6a.client.template.xml
+
+rm -f $CONF
+rm -f $SCEN
+
+cp $TEMPL_CONF $CONF
+cp $TEMPL_SCEN $SCEN
+
+sed -i "s/IP_IMSI_MSISDN/IP_IMSI_MSISDN_$INSTANCE/g" $CONF
+sed -i "s/ORIGIN_HOST/$ORIGIN_HOST/g" $SCEN
+sed -i "s/ORIGIN_REALM/$ORIGIN_REALM/g" $SCEN
+sed -i "s/DESTINATION_REALM/$DESTINATION_REALM/g" $SCEN
+
+echo -e "Config created for instance# $INSTANCE"
+}
+
+	LINE=$(grep -Ew "^$INSTANCE" $INFILE)
+
+  ORIGIN_HOST=$(echo $LINE | cut -d',' -f2)
+  ORIGIN_REALM=$(echo $LINE | cut -d',' -f3)
+  DESTINATION_HOST=$(echo $LINE | cut -d',' -f4)
+  DESTINATION_REALM=$(echo $LINE | cut -d',' -f5)
+
+  IMSI_START=$(echo $LINE | cut -d',' -f6)
+  MSISDN_START=$(echo $LINE | cut -d',' -f7)
+  RECORD_AMOUNT=$(echo $LINE | cut -d',' -f8)
+  IP_START=$(echo $LINE | cut -d',' -f9)
+
+	PID_FILE=$PID_DIR/S6a.client.$INSTANCE.pid
+	CONF=/tmp/.S6a.client.$INSTANCE.conf.xml
+	SCEN=/tmp/.S6a.client.$INSTANCE.scen.xml
+	DICO=$SEAGULL_BASE/dico/S6a.dico.optimized.xml
+	LOG=$SEAGULL_BASE/logs/S6a.client.$INSTANCE.log
+
+	IMSI_LIST={{ seagull_path }}/scen/csv/IP_IMSI_MSISDN_$INSTANCE.csv
+
+	[[ ! -f $IMSI_LIST ]] && create_imsi_list || echo -e "\n\n $IMSI_LIST exists, not creating new\n\n"
+	create_config

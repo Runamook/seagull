@@ -1,0 +1,672 @@
+{
+   "dashboard" : {
+      "tags" : [],
+      "timepicker" : {
+         "refresh_intervals" : [
+            "5s",
+            "10s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "30m",
+            "1h",
+            "2h",
+            "1d"
+         ],
+         "time_options" : [
+            "5m",
+            "15m",
+            "1h",
+            "6h",
+            "12h",
+            "24h",
+            "2d",
+            "7d",
+            "30d"
+         ]
+      },
+      "id" : null,
+      "uid" : null,
+      "editable" : true,
+      "panels" : [
+         {
+            "seriesOverrides" : [],
+            "fill" : 0,
+            "steppedLine" : false,
+            "tooltip" : {
+               "value_type" : "individual",
+               "shared" : true,
+               "sort" : 0
+            },
+            "xaxis" : {
+               "values" : [],
+               "buckets" : null,
+               "mode" : "time",
+               "name" : null,
+               "show" : true
+            },
+            "lines" : true,
+            "legend" : {
+               "avg" : false,
+               "total" : false,
+               "min" : false,
+               "show" : true,
+               "max" : false,
+               "current" : false,
+               "values" : false
+            },
+            "renderer" : "flot",
+            "aliasColors" : {},
+            "yaxis" : {
+               "align" : false,
+               "alignLevel" : null
+            },
+            "linewidth" : 1,
+            "targets" : [
+               {
+                  "refId" : "A",
+                  "refCount" : 0,
+                  "target" : "aliasByNode(scale(collectd.MP[1-2].snmp.cpu-idle_raw, '$CPU_count_1'), 1)"
+               },
+               {
+                  "target" : "aliasByNode(scale(collectd.MP[3-4].snmp.cpu-idle_raw, '$CPU_count_2'), 1)",
+                  "refCount" : 0,
+                  "refId" : "B"
+               }
+            ],
+            "bars" : false,
+            "timeFrom" : null,
+            "thresholds" : [],
+            "gridPos" : {
+               "w" : 8,
+               "y" : 0,
+               "h" : 7,
+               "x" : 0
+            },
+            "spaceLength" : 10,
+            "timeShift" : null,
+            "pointradius" : 5,
+            "title" : "CPU idle",
+            "nullPointMode" : "null",
+            "type" : "graph",
+            "links" : [],
+            "dashLength" : 10,
+            "yaxes" : [
+               {
+                  "label" : null,
+                  "format" : "percent",
+                  "show" : true,
+                  "min" : null,
+                  "logBase" : 1,
+                  "max" : null
+               },
+               {
+                  "show" : true,
+                  "min" : null,
+                  "format" : "short",
+                  "label" : null,
+                  "logBase" : 1,
+                  "max" : null
+               }
+            ],
+            "stack" : false,
+            "points" : false,
+            "datasource" : null,
+            "percentage" : false,
+            "dashes" : false,
+            "id" : 2
+         },
+         {
+            "fill" : 0,
+            "seriesOverrides" : [],
+            "steppedLine" : false,
+            "tooltip" : {
+               "sort" : 0,
+               "shared" : true,
+               "value_type" : "individual"
+            },
+            "xaxis" : {
+               "name" : null,
+               "show" : true,
+               "buckets" : null,
+               "mode" : "time",
+               "values" : []
+            },
+            "lines" : true,
+            "legend" : {
+               "max" : false,
+               "values" : false,
+               "current" : false,
+               "total" : false,
+               "avg" : false,
+               "min" : false,
+               "show" : true
+            },
+            "renderer" : "flot",
+            "aliasColors" : {},
+            "yaxis" : {
+               "align" : false,
+               "alignLevel" : null
+            },
+            "linewidth" : 1,
+            "targets" : [
+               {
+                  "target" : "aliasByNode(scale(collectd.MP[1-2].snmp.cpu-wait_raw, '$CPU_count_1'), 1)",
+                  "refCount" : 0,
+                  "refId" : "A"
+               },
+               {
+                  "refId" : "B",
+                  "refCount" : 0,
+                  "target" : "aliasByNode(scale(collectd.MP[3-4].snmp.cpu-wait_raw, '$CPU_count_2'), 1)"
+               }
+            ],
+            "bars" : false,
+            "timeFrom" : null,
+            "thresholds" : [],
+            "gridPos" : {
+               "x" : 8,
+               "h" : 7,
+               "y" : 0,
+               "w" : 8
+            },
+            "spaceLength" : 10,
+            "timeShift" : null,
+            "pointradius" : 5,
+            "nullPointMode" : "null",
+            "title" : "CPU wait",
+            "links" : [],
+            "type" : "graph",
+            "dashLength" : 10,
+            "yaxes" : [
+               {
+                  "logBase" : 1,
+                  "max" : null,
+                  "show" : true,
+                  "min" : null,
+                  "format" : "percent",
+                  "label" : null
+               },
+               {
+                  "min" : null,
+                  "show" : true,
+                  "label" : null,
+                  "format" : "short",
+                  "max" : null,
+                  "logBase" : 1
+               }
+            ],
+            "points" : false,
+            "stack" : false,
+            "datasource" : null,
+            "percentage" : false,
+            "dashes" : false,
+            "id" : 3
+         },
+         {
+            "yaxis" : {
+               "alignLevel" : null,
+               "align" : false
+            },
+            "linewidth" : 1,
+            "targets" : [
+               {
+                  "target" : "aliasByNode(scale(collectd.MP[1-2].snmp.cpu-nice_raw, '$CPU_count_1'), 1)",
+                  "refId" : "A",
+                  "refCount" : 0
+               },
+               {
+                  "target" : "aliasByNode(scale(collectd.MP[3-4].snmp.cpu-nice_raw, '$CPU_count_2'), 1)",
+                  "refCount" : 0,
+                  "refId" : "B"
+               }
+            ],
+            "bars" : false,
+            "timeFrom" : null,
+            "fill" : 0,
+            "seriesOverrides" : [],
+            "tooltip" : {
+               "value_type" : "individual",
+               "shared" : true,
+               "sort" : 0
+            },
+            "steppedLine" : false,
+            "legend" : {
+               "show" : true,
+               "min" : false,
+               "total" : false,
+               "avg" : false,
+               "values" : false,
+               "current" : false,
+               "max" : false
+            },
+            "renderer" : "flot",
+            "aliasColors" : {},
+            "xaxis" : {
+               "mode" : "time",
+               "buckets" : null,
+               "values" : [],
+               "name" : null,
+               "show" : true
+            },
+            "lines" : true,
+            "datasource" : null,
+            "stack" : false,
+            "points" : false,
+            "percentage" : false,
+            "dashes" : false,
+            "id" : 4,
+            "gridPos" : {
+               "w" : 8,
+               "y" : 0,
+               "x" : 16,
+               "h" : 7
+            },
+            "thresholds" : [],
+            "title" : "CPU nice",
+            "nullPointMode" : "null",
+            "timeShift" : null,
+            "pointradius" : 5,
+            "spaceLength" : 10,
+            "dashLength" : 10,
+            "yaxes" : [
+               {
+                  "max" : null,
+                  "logBase" : 1,
+                  "min" : null,
+                  "show" : true,
+                  "format" : "percent",
+                  "label" : null
+               },
+               {
+                  "max" : null,
+                  "logBase" : 1,
+                  "label" : null,
+                  "format" : "short",
+                  "min" : null,
+                  "show" : true
+               }
+            ],
+            "links" : [],
+            "type" : "graph"
+         },
+         {
+            "legend" : {
+               "min" : false,
+               "show" : true,
+               "avg" : false,
+               "total" : false,
+               "current" : false,
+               "values" : false,
+               "max" : false
+            },
+            "renderer" : "flot",
+            "aliasColors" : {},
+            "xaxis" : {
+               "name" : null,
+               "show" : true,
+               "values" : [],
+               "mode" : "time",
+               "buckets" : null
+            },
+            "lines" : true,
+            "tooltip" : {
+               "value_type" : "individual",
+               "sort" : 0,
+               "shared" : true
+            },
+            "steppedLine" : false,
+            "fill" : 0,
+            "seriesOverrides" : [],
+            "timeFrom" : null,
+            "bars" : false,
+            "targets" : [
+               {
+                  "target" : "aliasByNode(scale(collectd.MP[1-2].snmp.cpu-system_raw, '$CPU_count_1'), 1)",
+                  "refId" : "A",
+                  "refCount" : 0
+               },
+               {
+                  "target" : "aliasByNode(scale(collectd.MP[3-4].snmp.cpu-system_raw, '$CPU_count_2'), 1)",
+                  "refId" : "B",
+                  "refCount" : 0
+               }
+            ],
+            "linewidth" : 1,
+            "yaxis" : {
+               "alignLevel" : null,
+               "align" : false
+            },
+            "dashLength" : 10,
+            "yaxes" : [
+               {
+                  "show" : true,
+                  "min" : null,
+                  "label" : null,
+                  "format" : "percent",
+                  "logBase" : 1,
+                  "max" : null
+               },
+               {
+                  "max" : null,
+                  "logBase" : 1,
+                  "min" : null,
+                  "show" : true,
+                  "label" : null,
+                  "format" : "short"
+               }
+            ],
+            "type" : "graph",
+            "links" : [],
+            "title" : "CPU system",
+            "nullPointMode" : "null",
+            "timeShift" : null,
+            "pointradius" : 5,
+            "spaceLength" : 10,
+            "gridPos" : {
+               "y" : 7,
+               "w" : 8,
+               "h" : 7,
+               "x" : 0
+            },
+            "thresholds" : [],
+            "id" : 5,
+            "dashes" : false,
+            "percentage" : false,
+            "stack" : false,
+            "datasource" : null,
+            "points" : false
+         },
+         {
+            "timeFrom" : null,
+            "bars" : false,
+            "targets" : [
+               {
+                  "refId" : "A",
+                  "refCount" : 0,
+                  "target" : "aliasByNode(scale(collectd.MP[1-2].snmp.cpu-user_raw, '$CPU_count_1'), 1)"
+               },
+               {
+                  "refCount" : 0,
+                  "refId" : "B",
+                  "target" : "aliasByNode(scale(collectd.MP[3-4].snmp.cpu-user_raw, '$CPU_count_2'), 1)"
+               }
+            ],
+            "linewidth" : 1,
+            "yaxis" : {
+               "alignLevel" : null,
+               "align" : false
+            },
+            "xaxis" : {
+               "values" : [],
+               "mode" : "time",
+               "buckets" : null,
+               "show" : true,
+               "name" : null
+            },
+            "lines" : true,
+            "legend" : {
+               "current" : false,
+               "values" : false,
+               "max" : false,
+               "min" : false,
+               "show" : true,
+               "total" : false,
+               "avg" : false
+            },
+            "renderer" : "flot",
+            "aliasColors" : {},
+            "steppedLine" : false,
+            "tooltip" : {
+               "value_type" : "individual",
+               "shared" : true,
+               "sort" : 0
+            },
+            "seriesOverrides" : [],
+            "fill" : 0,
+            "id" : 6,
+            "dashes" : false,
+            "percentage" : false,
+            "stack" : false,
+            "points" : false,
+            "datasource" : null,
+            "type" : "graph",
+            "links" : [],
+            "yaxes" : [
+               {
+                  "format" : "percent",
+                  "label" : null,
+                  "min" : null,
+                  "show" : true,
+                  "max" : null,
+                  "logBase" : 1
+               },
+               {
+                  "max" : null,
+                  "logBase" : 1,
+                  "label" : null,
+                  "format" : "short",
+                  "min" : null,
+                  "show" : true
+               }
+            ],
+            "dashLength" : 10,
+            "pointradius" : 5,
+            "timeShift" : null,
+            "spaceLength" : 10,
+            "title" : "CPU user",
+            "nullPointMode" : "null",
+            "thresholds" : [],
+            "gridPos" : {
+               "h" : 7,
+               "x" : 8,
+               "w" : 8,
+               "y" : 7
+            }
+         },
+         {
+            "dashes" : false,
+            "id" : 7,
+            "datasource" : null,
+            "stack" : false,
+            "points" : false,
+            "percentage" : false,
+            "dashLength" : 10,
+            "yaxes" : [
+               {
+                  "max" : null,
+                  "logBase" : 1,
+                  "min" : null,
+                  "show" : true,
+                  "format" : "percent",
+                  "label" : null
+               },
+               {
+                  "logBase" : 1,
+                  "max" : null,
+                  "show" : true,
+                  "min" : null,
+                  "label" : null,
+                  "format" : "short"
+               }
+            ],
+            "type" : "graph",
+            "links" : [],
+            "gridPos" : {
+               "w" : 8,
+               "y" : 7,
+               "h" : 7,
+               "x" : 16
+            },
+            "thresholds" : [],
+            "nullPointMode" : "null",
+            "title" : "Soft IQR",
+            "pointradius" : 5,
+            "timeShift" : null,
+            "spaceLength" : 10,
+            "targets" : [
+               {
+                  "target" : "aliasByNode(collectd.MP[1-2].snmp.irq-soft_irq_raw, 1)",
+                  "refCount" : 0,
+                  "refId" : "A"
+               },
+               {
+                  "target" : "aliasByNode(collectd.MP[3-4].snmp.irq-soft_irq_raw, 1)",
+                  "refCount" : 0,
+                  "refId" : "B"
+               }
+            ],
+            "timeFrom" : null,
+            "bars" : false,
+            "yaxis" : {
+               "align" : false,
+               "alignLevel" : null
+            },
+            "linewidth" : 1,
+            "legend" : {
+               "total" : false,
+               "avg" : false,
+               "show" : true,
+               "min" : false,
+               "max" : false,
+               "current" : false,
+               "values" : false
+            },
+            "renderer" : "flot",
+            "aliasColors" : {},
+            "xaxis" : {
+               "show" : true,
+               "name" : null,
+               "buckets" : null,
+               "mode" : "time",
+               "values" : []
+            },
+            "lines" : true,
+            "seriesOverrides" : [],
+            "fill" : 0,
+            "tooltip" : {
+               "value_type" : "individual",
+               "sort" : 0,
+               "shared" : true
+            },
+            "steppedLine" : false
+         }
+      ],
+      "graphTooltip" : 1,
+      "iteration" : 1527674745408,
+      "annotations" : {
+         "list" : [
+            {
+               "type" : "dashboard",
+               "iconColor" : "rgba(0, 211, 255, 1)",
+               "builtIn" : 1,
+               "name" : "Annotations & Alerts",
+               "datasource" : "-- Grafana --",
+               "hide" : true,
+               "enable" : true
+            }
+         ]
+      },
+      "links" : [],
+      "title" : "SNMP",
+      "refresh" : "1m",
+      "timezone" : "",
+      "time" : {
+         "from" : "now-1h",
+         "to" : "now-1m"
+      },
+      "version" : 9,
+      "schemaVersion" : 16,
+      "style" : "dark",
+      "templating" : {
+         "list" : [
+            {
+               "allValue" : null,
+               "query" : "1,0.5,0.25,0.125,0.0833",
+               "type" : "custom",
+               "hide" : 0,
+               "multi" : false,
+               "name" : "CPU_count_1",
+               "includeAll" : false,
+               "current" : {
+                  "value" : "0.125",
+                  "tags" : [],
+                  "text" : "0.125"
+               },
+               "label" : "CPU_count_1",
+               "options" : [
+                  {
+                     "text" : "1",
+                     "value" : "1",
+                     "selected" : false
+                  },
+                  {
+                     "selected" : false,
+                     "text" : "0.5",
+                     "value" : "0.5"
+                  },
+                  {
+                     "selected" : false,
+                     "value" : "0.25",
+                     "text" : "0.25"
+                  },
+                  {
+                     "text" : "0.125",
+                     "value" : "0.125",
+                     "selected" : true
+                  },
+                  {
+                     "value" : "0.0833",
+                     "text" : "0.0833",
+                     "selected" : false
+                  }
+               ]
+            },
+            {
+               "multi" : false,
+               "name" : "CPU_count_2",
+               "hide" : 0,
+               "type" : "custom",
+               "allValue" : null,
+               "query" : "1,0.5,0.25,0.125,0.0833",
+               "label" : "CPU_count_2",
+               "options" : [
+                  {
+                     "selected" : false,
+                     "value" : "1",
+                     "text" : "1"
+                  },
+                  {
+                     "selected" : false,
+                     "value" : "0.5",
+                     "text" : "0.5"
+                  },
+                  {
+                     "selected" : false,
+                     "text" : "0.25",
+                     "value" : "0.25"
+                  },
+                  {
+                     "text" : "0.125",
+                     "value" : "0.125",
+                     "selected" : false
+                  },
+                  {
+                     "text" : "0.0833",
+                     "value" : "0.0833",
+                     "selected" : true
+                  }
+               ],
+               "current" : {
+                  "tags" : [],
+                  "text" : "0.0833",
+                  "value" : "0.0833"
+               },
+               "includeAll" : false
+            }
+         ]
+      },
+      "gnetId" : null
+   }
+}

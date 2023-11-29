@@ -1,0 +1,85 @@
+---
+
+- name: Install yum packages
+  yum: "name={{ item }} state=installed"
+  with_items:
+    - createrepo
+    - libselinux-python
+    - bc
+
+- name: Copy repo file
+  template: src=Seagull.repo.j2 dest=/etc/yum.repos.d/Seagull.repo
+  register: gull_repo
+
+- name: Unarchive RPMs
+  unarchive:
+    copy: no
+    src: https://downloads.sourceforge.net/project/gull/seagull/1.8.2/seagull-1.8.2-Linux_RHEL6U1_X86_64.tar.gz
+    dest: /tmp/
+  when: gull_repo.changed
+
+- name: create repo
+  shell: createrepo /tmp/packages
+  when: gull_repo.changed
+
+- name: Install seagull packages
+  yum: "name={{ item }} state=installed"
+  with_items:
+    - seagull-diameter-protocol
+    - seagull-radius-protocol
+    - seagull-trans-sctp
+    - seagull-external-lib-sctp
+    - seagull-core
+
+- name: Create seagull directories
+  file:
+    path: "{{ item.dir }}"
+    mode: "{{ item.mode }}"
+    state: directory
+  with_items:
+    - { dir: '{{ seagull_path }}/config', mode: '755' }
+    - { dir: '{{ seagull_path }}/logs', mode: '755' }
+    - { dir: '{{ seagull_path }}/dico', mode: '755' }
+    - { dir: '{{ seagull_path }}/run', mode: '755' }
+    - { dir: '{{ seagull_path }}/scen', mode: '755' }
+    - { dir: '{{ seagull_path }}/scen/csv', mode: '755' }
+    - { dir: '/var/run/seagull', mode: '755' }
+
+
+- name: Copy seagull files
+  template: "src={{ item.name }} dest={{ seagull_path }}/{{ item.dirname }} mode={{ item.mode }}"
+  with_items:
+    - { name: 'S6a.dico.optimized.xml.j2', dirname: 'dico/S6a.dico.optimized.xml', mode: '664' }
+    - { name: 'S6a.client.conf.template.xml.j2', dirname: 'config/S6a.client.template.xml', mode: '664' }
+    - { name: 'S6a.server.conf.template.xml.j2', dirname: 'config/S6a.server.template.xml', mode: '664' }
+    - { name: 'S6a.client.template.xml.j2', dirname: 'scen/S6a.client.template.xml', mode: '664' }
+    - { name: 'S6a.server.template.xml.j2', dirname: 'scen/S6a.server.template.xml', mode: '664' }
+    - { name: 'S6a.client.starter.sh.j2', dirname: 'run/S6a.client.starter.sh', mode: '755' }
+    - { name: 'S6a.server.starter.sh.j2', dirname: 'run/S6a.server.starter.sh', mode: '755' }
+    - { name: 'roles/gull/templates/S6a.client.confgen.sh.j2', dirname: 'run/S6a.client.confgen.sh', mode: '755' }
+    - { name: 'roles/gull/templates/S6a.server.confgen.sh.j2', dirname: 'run/S6a.server.confgen.sh', mode: '755' }
+    - { name: 'roles/gull/templates/Seagull_template.cl.csv.j2', dirname: 'run/Seagull_template.cl.csv', mode: '755' }
+    - { name: 'roles/gull/templates/Seagull_template.srv.csv.j2', dirname: 'run/Seagull_template.srv.csv', mode: '755' }
+
+- name: Copy monit files
+  template: "src={{ item.name }} dest={{ item.dest }} mode={{ item.mode }}"
+  with_items:
+    - { name: 'monit_s6a_client.j2', dest: '/etc/monit.d/monit_s6a_client', mode: '0644' }
+    - { name: 'monit_s6a_server.j2', dest: '/etc/monit.d/monit_s6a_server', mode: '0644' }
+    - { name: 'monit_starter.sh.j2', dest: '{{ seagull_path }}/run/.monit_starter.sh', mode: '0755' }
+      #notify:
+      #- restart monit
+
+- name: Update libraries
+  template: "src={{ item.name }} dest={{ item.dest }} mode={{ item.mode }}"
+  with_items:
+    - { name: 'ld.seagull.conf.j2', dest: '/etc/ld.so.conf.d/seagull.conf', mode: '0644' }
+  notify: run ldconfig
+
+- name: Change owner
+  file: "path={{ item }} owner={{ ansible_ssh_user }} group={{ user_group }} recurse=yes"
+  #file: "path={{ item }} owner=root group=root recurse=yes"
+  with_items:
+    - /var/run/seagull
+    - /opt/seagull
+...

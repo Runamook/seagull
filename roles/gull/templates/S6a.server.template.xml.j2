@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<scenario>
+	<counter>
+		<counterdef name="HbH-counter" init="1000"></counterdef>
+		<counterdef name="EtE-counter" init="2000"></counterdef>
+		<counterdef name="session-counter" init="0"></counterdef>
+	</counter>
+
+	<init>
+		<receive channel="channel-1">
+			<command name="CER">
+                        <action>
+                                <store name="HbH" entity="HbH-id"></store>
+                                <store name="E2E" entity="EtE-id"></store>
+                        </action>
+			</command>
+		</receive>
+
+		<send channel="channel-1">
+                        <action>
+                                <restore name="HbH" entity="HbH-id"> </restore>
+                                <restore name="E2E" entity="EtE-id"> </restore>
+                        </action>
+			<command name="CEA">
+				<avp name="Origin-Host" value="ORIGIN_HOST"></avp>
+				<avp name="Origin-Realm" value="ORIGIN_REALM"></avp>
+				<avp name="Host-IP-Address" value="0x0001{{ own_sig_address_hex }}"> </avp>
+				<avp name="Vendor-Id" value="1"></avp>
+				<avp name="Product-Name" value="S6a"></avp>
+				<avp name="Result-Code" value="2001"> </avp>
+				<avp name="Origin-State-Id" value="1094807040"></avp>
+				<avp name="Supported-Vendor-Id" value="10415"></avp>
+				<avp name="Vendor-Specific-Application-Id">
+					<avp name="Vendor-Id" value="10415"></avp>
+					<avp name="Auth-Application-Id" value="16777251"></avp>
+				</avp>
+				<avp name="Vendor-Specific-Application-Id">
+					<avp name="Vendor-Id" value="10415"></avp>
+					<avp name="Auth-Application-Id" value="16777255"></avp>
+				</avp>
+				<avp name="Firmware-Revision" value="1"></avp>
+			</command>
+		</send>
+
+	</init>
+
+	<traffic>
+		<receive channel="channel-1">
+			<command name="AIR"></command>
+			<action>
+				<store name="HbH" entity="HbH-id"></store>
+				<store name="E2E" entity="EtE-id"></store>
+				<store name="sid" entity="Session-Id"></store>
+			</action>
+		</receive>
+
+		<send channel="channel-1">
+			<action>
+				<restore name="HbH" entity="HbH-id"> </restore>
+				<restore name="E2E" entity="EtE-id"> </restore>
+				<restore name="sid" entity="Session-Id"> </restore>
+			</action>
+			<command name="AIA">
+				<avp name="Session-Id" value="replaced"> </avp>
+				<avp name="Result-Code" value="RESULTCODE1"> </avp>
+				<avp name="Auth-Session-State" value="1"> </avp>
+				<avp name="Origin-Host" value="ORIGIN_HOST"> </avp>
+				<avp name="Origin-Realm" value="ORIGIN_REALM"> </avp>
+				<avp name="Authentication-Info">
+					<avp name="E-UTRAN-Vector">
+						<avp name="Item-Number" value="1"> </avp>
+						<avp name="RAND" value="de80bb2377aede420890c7152b08e06f"> </avp>
+						<avp name="XRES" value="937573ec75ccd3d1"> </avp>
+						<avp name="AUTN" value="a7c0cd40f29e8000bbe94c014dee2b4d"> </avp>
+						<avp name="KASME" value="4531948531e05cd56b27eb3fdb843b1dbe20dd9c48ea944812367d2bec45105d"> </avp>
+					</avp>
+					<avp name="E-UTRAN-Vector">
+						<avp name="Item-Number" value="2"> </avp>
+						<avp name="RAND" value="de80bb2377aede420890c7152b08e06f"> </avp>
+						<avp name="XRES" value="937573ec75ccd3d1"> </avp>
+						<avp name="AUTN" value="a7c0cd40f29e8000bbe94c014dee2b4d"> </avp>
+						<avp name="KASME" value="4531948531e05cd56b27eb3fdb843b1dbe20dd9c48ea944812367d2bec45105d"> </avp>
+					</avp>
+					<avp name="E-UTRAN-Vector">
+						<avp name="Item-Number" value="3"> </avp>
+						<avp name="RAND" value="de80bb2377aede420890c7152b08e06f"> </avp>
+						<avp name="XRES" value="937573ec75ccd3d1"> </avp>
+						<avp name="AUTN" value="a7c0cd40f29e8000bbe94c014dee2b4d"> </avp>
+						<avp name="KASME" value="4531948531e05cd56b27eb3fdb843b1dbe20dd9c48ea944812367d2bec45105d"> </avp>
+					</avp>
+					<avp name="E-UTRAN-Vector">
+						<avp name="Item-Number" value="4"> </avp>
+						<avp name="RAND" value="de80bb2377aede420890c7152b08e06f"> </avp>
+						<avp name="XRES" value="937573ec75ccd3d1"> </avp>
+						<avp name="AUTN" value="a7c0cd40f29e8000bbe94c014dee2b4d"> </avp>
+						<avp name="KASME" value="4531948531e05cd56b27eb3fdb843b1dbe20dd9c48ea944812367d2bec45105d"> </avp>
+					</avp>
+					<avp name="E-UTRAN-Vector">
+						<avp name="Item-Number" value="5"> </avp>
+						<avp name="RAND" value="de80bb2377aede420890c7152b08e06f"> </avp>
+						<avp name="XRES" value="937573ec75ccd3d1"> </avp>
+						<avp name="AUTN" value="a7c0cd40f29e8000bbe94c014dee2b4d"> </avp>
+						<avp name="KASME" value="4531948531e05cd56b27eb3fdb843b1dbe20dd9c48ea944812367d2bec45105d"> </avp>
+					</avp>
+				</avp>
+			</command>
+		</send>
+	</traffic>
+
+<default behaviour="ignore">
+	<receive channel="channel-1">
+		<command name="DWR"></command>
+		<action>
+			<store name="HbH" entity="HbH-id"></store>
+			<store name="E2E" entity="EtE-id"></store>
+		</action>
+	</receive>
+	<send channel="channel-1">
+		<action>
+			<restore name="HbH" entity="HbH-id"></restore>
+			<restore name="E2E" entity="EtE-id"></restore>
+		</action>
+		<command name="DWA">
+			<avp name="Origin-Host" value="ORIGIN_HOST"> </avp>
+			<avp name="Origin-Realm" value="ORIGIN_REALM"> </avp>
+			<avp name="Result-Code" value="2001"></avp>
+		</command>
+	</send>
+</default>
+
+<default behaviour="ignore">
+	<receive channel="channel-1">
+		<command name="CER"></command>
+		<action>
+			<store name="HbH" entity="HbH-id"></store>
+			<store name="E2E" entity="EtE-id"></store>
+		</action>
+	</receive>
+	<send channel="channel-1">
+		<command name="CEA">
+			<avp name="Origin-Host" value="ORIGIN_HOST"></avp>
+			<avp name="Origin-Realm" value="ORIGIN_REALM"></avp>
+			<avp name="Host-IP-Address" value="0x0001{{ own_sig_address_hex }}"> </avp>
+			<avp name="Vendor-Id" value="1"></avp>
+			<avp name="Product-Name" value="S6a"></avp>
+			<avp name="Result-Code" value="2001"> </avp>
+			<avp name="Origin-State-Id" value="1094807040"></avp>
+			<avp name="Supported-Vendor-Id" value="10415"></avp>
+			<avp name="Vendor-Specific-Application-Id">
+				<avp name="Vendor-Id" value="10415"></avp>
+				<avp name="Auth-Application-Id" value="16777251"></avp>
+			</avp>
+			<avp name="Vendor-Specific-Application-Id">
+				<avp name="Vendor-Id" value="10415"></avp>
+				<avp name="Auth-Application-Id" value="16777255"></avp>
+			</avp>
+			<avp name="Firmware-Revision" value="1"></avp>
+		</command>
+	</send>
+</default>
+
+</scenario>

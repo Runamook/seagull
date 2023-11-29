@@ -1,0 +1,15 @@
+---
+- hosts: all
+  become: true
+  become_user: root
+
+
+  roles:
+    - { role: 'common', tags: 'common' }
+    - { role: 'monit', tags: 'monit' }
+    - { role: 'gull', tags: 'gull' }
+    - { role: 'grafana', tags: 'grafana' }
+    - { role: 'ss7', tags: 'ss7' }
+    - { role: 'collectd', tags: 'collectd' }
+
+...

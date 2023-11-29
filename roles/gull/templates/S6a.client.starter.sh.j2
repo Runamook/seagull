@@ -1,0 +1,111 @@
+#!/bin/bash
+# source function library
+. /etc/rc.d/init.d/functions
+
+INSTANCE=$2
+PID_DIR="/var/run/seagull"
+PID_FILE=$PID_DIR/S6a.client.$INSTANCE.pid
+HOST="{{own_sig_address}}"
+RATE=$3
+
+unset http_proxy
+
+SEAGULL_BASE={{ seagull_path }}
+CONFGEN={{ seagull_path }}/run/S6a.client.confgen.sh
+
+CONF=/tmp/.S6a.client.$INSTANCE.conf.xml
+SCEN=/tmp/.S6a.client.$INSTANCE.scen.xml
+DICO=$SEAGULL_BASE/dico/S6a.dico.optimized.xml
+LOG=$SEAGULL_BASE/logs/S6a.client.$INSTANCE.log
+
+
+check_running()
+{
+if [ -f $PID_FILE ]; then
+	echo -e "\n$PID_FILE exists\nProcess already running\n"
+	exit 1
+fi 
+}
+
+start ()
+{
+		check_running
+		bash $CONFGEN $INSTANCE
+
+		PORT=$(echo "$(($INSTANCE + 22321))")
+
+		/usr/local/bin/seagull -conf $CONF -dico $DICO -scen $SCEN -log $LOG -llevel N -ctrl $HOST:$PORT -bg &&     success || failure
+		#/usr/local/bin/seagull -conf $CONF -dico $DICO -scen $SCEN -log $LOG -llevel ET -ctrl $HOST:$PORT -bg &&     success || failure
+		RETVAL=$?
+		if [ "$RETVAL" == 0 ]; then
+			PID=$(ps aux | grep -v grep | grep -E "ctrl .*$PORT" | awk '{print $2}')	
+			echo $PID > $PID_FILE
+			sleep 2
+			curl -s http://$HOST:$PORT/seagull/counters/all
+			echo
+			echo "Control interface on $PORT"
+		  echo
+		  exit 0
+		fi
+}
+
+pause ()
+{
+		PORT=$(echo "$(($INSTANCE + 22321))")
+		curl -s http://$HOST:$PORT/seagull/command/rate?value=0 && success || failure
+		echo
+}
+
+rate ()
+{
+		PORT=$(echo "$(($INSTANCE + 22321))")
+		curl -s http://$HOST:$PORT/seagull/command/rate?value=$RATE && success || failure
+		echo
+}
+
+graceful ()
+{
+		PORT=$(echo "$(($INSTANCE + 22321))")
+		curl -s http://$HOST:$PORT/seagull/command/stop && success || failure
+		echo "Stopping seagull..."
+}
+
+stats ()
+{
+		PORT=$(echo "$(($INSTANCE + 22321))")
+		curl -s http://$HOST:$PORT/seagull/counters/all
+		echo
+}
+
+stop ()
+{
+		killproc -p $PID_FILE -SIGUSR1
+		RETVAL=$?
+		[ "$RETVAL" = 0 ] && rm -f $PID_FILE || failure $"Stopping $prog"
+		echo
+		rm -f $PID_FILE
+}
+
+case "$1" in
+		start)
+				start
+				;;
+		stop)
+				stop
+				;;
+		graceful)
+				graceful
+				;;
+		pause)
+				pause
+				;;
+		stats)
+				stats
+				;;
+		rate)
+				rate
+				;;
+		*)
+				echo "Usage: $0 {start #|stop #|graceful #|pause #|rate instance# rate#|stats #}"
+				RETVAL=1
+esac 

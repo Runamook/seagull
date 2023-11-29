@@ -1,0 +1,31 @@
+---
+# Vagrant data
+
+ansible_ssh_host: 192.168.33.10
+ansible_ssh_user: vagrant
+ansible_ssh_pass: vagrant
+
+user_group: vagrant
+
+ip_address: 192.168.33.10
+hostname: traffic-generator
+
+own_sig_address: 192.168.33.10
+own_sig_address_hex: c0a8210a
+
+
+# Tele2 data
+
+#ansible_ssh_host: 10.251.8.82
+#ansible_ssh_user: root
+#ansible_ssh_pass: xvRwD86F
+#user_group: root
+#
+#ip_address: 10.251.8.82
+#hostname: traffic-generator
+#
+#own_sig_address: 10.251.6.9
+#own_sig_address_hex: 0afb0609
+#
+
+...

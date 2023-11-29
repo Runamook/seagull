@@ -1,0 +1,20 @@
+---
+- name: Install YUM packages
+  yum: "name={{ item }} state=installed"
+  with_items:
+    - httpd
+    - mod_wsgi
+
+- name: Copy files
+  template: "src={{ item.src }} dest={{ item.dest }} owner={{ item.owner }} group={{ item.group }} mode={{ item.mode }}"
+  with_items:
+    - { src: 'roles/grafana/templates/graphite.conf.j2', dest: '/etc/httpd/conf.d/graphite.conf', owner: 'root', group: 'root', mode: '0644'}
+
+- name: Start httpd
+  service: "name={{ item }} state=started enabled=true"
+  with_items:
+    - httpd
+  notify:
+    - restart httpd
+
+...

@@ -1,0 +1,61 @@
+---
+ntp_server: 2.fedora.pool.ntp.org
+company: sbtel
+fqdn: tg.{{ company }}.com
+realm: {{ company }}.com
+timezone: Europe/Moscow
+seagull_path: /opt/seagull/diameter/{{ comoany }}
+
+peer_address: 127.0.0.1
+peer_port: 3868
+
+amount_of_imsis: 10000
+cl1_imsi_start: 999997000000000
+cl2_imsi_start: 999998000000000
+cl3_imsi_start: 999999000000000
+cl1_msisdn_start: 99970000000
+cl2_msisdn_start: 99980000000
+cl3_msisdn_start: 99990000000
+
+srv1_imsi_start: 999997000000000
+srv2_imsi_start: 999998000000000
+srv3_imsi_start: 999999000000000
+srv1_msisdn_start: 99970000000
+srv2_msisdn_start: 99980000000
+srv3_msisdn_start: 99990000000
+
+cl1_origin_realm: test.org
+cl2_origin_realm: test.org
+cl3_origin_realm: test.org
+cl1_origin_host: mme1.test.org
+cl2_origin_host: mme2.test.org
+cl3_origin_host: mme3.test.org
+cl1_destination_realm: test.org
+cl2_destination_realm: test.org
+cl3_destination_realm: test.org
+
+srv1_origin_realm: test.org
+srv2_origin_realm: test.org
+srv3_origin_realm: test.org
+srv1_origin_host: hss1.test.org
+srv2_origin_host: hss2.test.org
+srv3_origin_host: hss3.test.org
+srv1_destination_realm: test.org
+srv2_destination_realm: test.org
+srv3_destination_realm: test.org
+
+snmp_community: 123
+snmp_hosts:
+  - name: traffic-gen
+    ip_address: 127.0.0.1
+#  - name: MP2
+#    ip_address: 10.251.8.9
+#  - name: MP3
+#    ip_address: 10.251.8.80
+#  - name: MP4
+#    ip_address: 10.251.8.81
+
+grafana_user: admin
+grafana_pass: admin
+
+...

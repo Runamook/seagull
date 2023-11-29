@@ -1,0 +1,165 @@
+LoadPlugin curl
+<Plugin curl>
+    <Page "hss1">
+          URL "http://{{ own_sig_address }}:22322/seagull/counters/all"
+          <Match>
+               Regex "incoming_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "incomingCalls"
+          </Match>
+          <Match>
+               Regex "outgoing_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "outgoingCalls"
+          </Match>
+          <Match>
+               Regex "successful_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "successfulCalls"
+          </Match>
+          <Match>
+               Regex "failed_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "failedCalls"
+          </Match>
+    </Page>
+    <Page "hss2">
+          URL "http://{{ own_sig_address }}:22323/seagull/counters/all"
+          <Match>
+               Regex "incoming_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "incomingCalls"
+          </Match>
+          <Match>
+               Regex "outgoing_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "outgoingCalls"
+          </Match>
+          <Match>
+               Regex "successful_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "successfulCalls"
+          </Match>
+          <Match>
+               Regex "failed_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "failedCalls"
+          </Match>
+    </Page>
+    <Page "hss3">
+          URL "http://{{ own_sig_address }}:22324/seagull/counters/all"
+          <Match>
+               Regex "incoming_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "incomingCalls"
+          </Match>
+          <Match>
+               Regex "outgoing_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "outgoingCalls"
+          </Match>
+          <Match>
+               Regex "successful_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "successfulCalls"
+          </Match>
+          <Match>
+               Regex "failed_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "failedCalls"
+          </Match>
+    </Page>
+    <Page "mme1">
+          URL "http://{{ own_sig_address }}:22222/seagull/counters/all"
+          <Match>
+               Regex "incoming_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "incomingCalls"
+          </Match>
+          <Match>
+               Regex "outgoing_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "outgoingCalls"
+          </Match>
+          <Match>
+               Regex "successful_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "successfulCalls"
+          </Match>
+          <Match>
+               Regex "failed_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "failedCalls"
+          </Match>
+    </Page>
+    <Page "mme2">
+          URL "http://{{ own_sig_address }}:22223/seagull/counters/all"
+          <Match>
+               Regex "incoming_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "incomingCalls"
+          </Match>
+          <Match>
+               Regex "outgoing_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "outgoingCalls"
+          </Match>
+          <Match>
+               Regex "successful_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "successfulCalls"
+          </Match>
+          <Match>
+               Regex "failed_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "failedCalls"
+          </Match>
+    </Page>
+    <Page "mme3">
+          URL "http://{{ own_sig_address }}:22224/seagull/counters/all"
+          <Match>
+               Regex "incoming_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "incomingCalls"
+          </Match>
+          <Match>
+               Regex "outgoing_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "outgoingCalls"
+          </Match>
+          <Match>
+               Regex "successful_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "successfulCalls"
+          </Match>
+          <Match>
+               Regex "failed_calls= +([0-9]+)"
+               DSType "DeriveSet"
+               Type "derive"
+               Instance "failedCalls"
+          </Match>
+    </Page>
+</Plugin>

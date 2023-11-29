@@ -1,0 +1,8 @@
+---
+- name: run ldconfig
+  command: ldconfig
+
+- name: restart monit
+  service: name=monit state=restarted
+
+...
